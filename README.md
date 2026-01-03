@@ -40,12 +40,46 @@ model delivers. It offers:
 ## Features
 
 - 🎯 **99 Languages** – Full Whisper multilingual support
-- 🍎 **Neural Engine Acceleration** – Runs on Apple's dedicated ML silicon
+- 🚀 **14x real-time** – Transcribe 1 hour of audio in ~4.5 minutes (M1 Ultra, measured)
+- 🍎 **Neural Engine Acceleration** – Runs on Apple's dedicated ML silicon via CoreML
 - 🔒 **Fully Offline** – All processing happens locally
 - 📦 **Zero Runtime Dependencies** – No Python, no subprocess
 - 📝 **Timestamps** – Segment-level timing for subtitles
 - 🔄 **Translation** – Translate any language to English
 - ⬇️ **Easy Setup** – Single CLI command to download the model
+
+## Performance
+
+The CoreML encoder runs on Apple's Neural Engine for accelerated inference:
+
+**Measured: M1 Ultra**
+
+```
+5 minutes of audio → 22.5 seconds
+Speed: 14x real-time
+1 hour of audio in ~4.5 minutes
+```
+
+Run your own benchmark:
+
+```bash
+git clone https://github.com/sebastian-software/whisper-coreml
+cd whisper-coreml && npm install && npm run benchmark
+```
+
+### Comparison with parakeet-coreml
+
+| Metric           | whisper-coreml | parakeet-coreml |
+| ---------------- | -------------- | --------------- |
+| Speed (M1 Ultra) | 14x real-time  | 40x real-time   |
+| Languages        | 99             | ~15             |
+| Translation      | ✅ Yes         | ❌ No           |
+| Accuracy (WER)   | Lower (better) | Higher          |
+| Model Size       | ~3 GB          | ~1.5 GB         |
+
+**When to choose whisper-coreml:** Maximum accuracy, rare languages, translation, challenging audio.
+
+**When to choose parakeet-coreml:** Maximum speed, major languages only.
 
 ## Requirements
 
