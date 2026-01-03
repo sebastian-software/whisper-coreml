@@ -27,7 +27,7 @@ When you need **higher transcription quality** than
 [parakeet-coreml](https://github.com/sebastian-software/parakeet-coreml), Whisper's large-v3-turbo
 model delivers. It offers:
 
-- **99 language support** vs Parakeet's ~15 languages
+- **99 language support** vs Parakeet's 25 European languages
 - **Better accuracy** on challenging audio (accents, background noise)
 - **Translation capability** (any language → English)
 - **Word-level confidence scores**
