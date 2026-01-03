@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.0.0](https://github.com/sebastian-software/whisper-coreml/compare/v0.2.0...v1.0.0) (2026-01-03)
+
+### Documentation
+
+- add codecov badge to README
+  ([b831156](https://github.com/sebastian-software/whisper-coreml/commit/b831156634ef4f49df92387e9898e2caae183ac6))
+- add comparison with non-CoreML alternatives
+  ([717693c](https://github.com/sebastian-software/whisper-coreml/commit/717693c0d62b72fac9fdf70aa97bfed20d6f3ea9))
+- remove translation as marketing feature
+  ([98ee2a6](https://github.com/sebastian-software/whisper-coreml/commit/98ee2a65906365ac7a477529c4fcee16c3756021))
+- rewrite README intro for clarity and impact
+  ([f5da75e](https://github.com/sebastian-software/whisper-coreml/commit/f5da75ebcf4b343949519325ea5b2f3664914a05))
+
 ## 0.2.0 (2026-01-03)
 
 ### Features
