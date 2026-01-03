@@ -1,0 +1,53 @@
+name: E2E Tests
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+jobs:
+  e2e:
+    name: E2E Tests (macOS)
+    runs-on: macos-14
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Cache whisper.cpp
+        uses: actions/cache@v4
+        with:
+          path: vendor/whisper.cpp
+          key: whisper-cpp-${{ hashFiles('package.json') }}
+
+      - name: Cache models
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/whisper-coreml
+          key: whisper-models-v1
+
+      - name: Install dependencies
+        run: pnpm install --ignore-scripts
+
+      - name: Prepare whisper.cpp
+        run: pnpm run prepare:whisper
+
+      - name: Build
+        run: pnpm build
+
+      - name: Install ffmpeg
+        run: brew install ffmpeg
+
+      - name: Download models
+        run: node ./dist/cli.cjs download
+
+      - name: Run E2E tests
+        run: pnpm test test/e2e.test.ts

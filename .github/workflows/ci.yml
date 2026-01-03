@@ -1,0 +1,114 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Lint & Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      # --force bypasses os/cpu restrictions (package is macOS-only but linting works everywhere)
+      - name: Install dependencies
+        run: pnpm install --ignore-scripts --force
+
+      - name: Run ESLint
+        run: pnpm lint
+
+      - name: Run Prettier check
+        run: pnpm format:check
+
+      - name: Run TypeScript check
+        run: pnpm typecheck
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      # --force bypasses os/cpu restrictions (package is macOS-only but unit tests work everywhere)
+      - name: Install dependencies
+        run: pnpm install --ignore-scripts --force
+
+      - name: Build TypeScript
+        run: pnpm build:ts
+
+      - name: Run tests with coverage
+        run: pnpm test:coverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          files: ./coverage/lcov.info
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+  build:
+    name: Build (macOS)
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Cache whisper.cpp
+        uses: actions/cache@v4
+        with:
+          path: vendor/whisper.cpp
+          key: whisper-cpp-${{ hashFiles('package.json') }}
+
+      - name: Install dependencies
+        run: pnpm install --ignore-scripts
+
+      - name: Prepare whisper.cpp
+        run: pnpm run prepare:whisper
+
+      - name: Build native addon
+        run: pnpm build:native
+
+      - name: Build TypeScript
+        run: pnpm build:ts
+
+      - name: Verify build artifacts
+        run: |
+          ls -la build/Release/
+          ls -la dist/
+
+      - name: Run E2E smoke test (addon loading)
+        run: |
+          node -e "
+            const { isAvailable } = require('./dist/index.cjs');
+            console.log('Platform available:', isAvailable());
+            if (!isAvailable()) process.exit(1);
+          "
