@@ -2,7 +2,8 @@
 
 OpenAI Whisper ASR for Node.js with **CoreML/ANE acceleration** on Apple Silicon.
 
-Based on [whisper.cpp](https://github.com/ggerganov/whisper.cpp) with Apple Neural Engine support for optimal performance.
+Based on [whisper.cpp](https://github.com/ggerganov/whisper.cpp) with Apple Neural Engine support
+for optimal performance.
 
 ## Features
 
@@ -64,20 +65,20 @@ engine.cleanup()
 ```typescript
 const engine = new WhisperAsrEngine({
   modelPath: "./models/ggml-large-v3-turbo.bin",
-  language: "de",    // German input
-  translate: true    // Output in English
+  language: "de", // German input
+  translate: true // Output in English
 })
 ```
 
 ## Models
 
-| Model | Size | Speed | Accuracy |
-|-------|------|-------|----------|
-| `tiny` | 75 MB | Fastest | Basic |
-| `base` | 142 MB | Fast | Good |
-| `small` | 466 MB | Medium | Better |
-| `medium` | 1.5 GB | Slow | High |
-| `large-v3` | 2.9 GB | Slowest | Best |
+| Model            | Size   | Speed    | Accuracy      |
+| ---------------- | ------ | -------- | ------------- |
+| `tiny`           | 75 MB  | Fastest  | Basic         |
+| `base`           | 142 MB | Fast     | Good          |
+| `small`          | 466 MB | Medium   | Better        |
+| `medium`         | 1.5 GB | Slow     | High          |
+| `large-v3`       | 2.9 GB | Slowest  | Best          |
 | `large-v3-turbo` | 1.5 GB | **Fast** | **Near-best** |
 
 ## API
@@ -95,12 +96,12 @@ new WhisperAsrEngine({
 
 #### Methods
 
-| Method | Description |
-|--------|-------------|
-| `initialize()` | Load model (async) |
-| `isReady()` | Check if ready |
-| `transcribe(samples, sampleRate)` | Transcribe audio |
-| `cleanup()` | Release resources |
+| Method                            | Description        |
+| --------------------------------- | ------------------ |
+| `initialize()`                    | Load model (async) |
+| `isReady()`                       | Check if ready     |
+| `transcribe(samples, sampleRate)` | Transcribe audio   |
+| `cleanup()`                       | Release resources  |
 
 ### `TranscriptionResult`
 
