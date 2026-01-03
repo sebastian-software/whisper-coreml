@@ -6,7 +6,7 @@ PACKAGE_DIR="$(dirname "$SCRIPT_DIR")"
 VENDOR_DIR="$PACKAGE_DIR/vendor"
 WHISPER_VERSION="v1.7.3"
 
-echo "Preparing whisper.cpp for @cuttledoc/whisper-asr..."
+echo "Preparing whisper.cpp for whisper-coreml..."
 
 # Clone whisper.cpp if not exists
 if [ ! -d "$VENDOR_DIR/whisper.cpp" ]; then
