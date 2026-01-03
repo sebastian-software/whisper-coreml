@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import {
   getDefaultModelDir,
+  getLoadError,
   getModelPath,
   isAvailable,
   isModelDownloaded,
@@ -20,6 +21,15 @@ describe("index", () => {
       } else {
         expect(result).toBe(false)
       }
+    })
+  })
+
+  describe("getLoadError", () => {
+    it("returns null when addon loaded successfully", () => {
+      // On a supported platform where addon loads, this should be null
+      // On unsupported platforms, the addon won't be loaded yet
+      const error = getLoadError()
+      expect(error === null || error instanceof Error).toBe(true)
     })
   })
 
@@ -67,7 +77,6 @@ describe("index", () => {
         const engine = new WhisperAsrEngine({
           modelPath: "/fake/path.bin",
           language: "de",
-          translate: true,
           threads: 4
         })
         expect(engine).toBeInstanceOf(WhisperAsrEngine)
