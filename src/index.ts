@@ -3,13 +3,18 @@
  *
  * OpenAI Whisper ASR for Node.js with CoreML/ANE acceleration on Apple Silicon.
  * Based on whisper.cpp with Apple Neural Engine support.
+ *
+ * Uses the large-v3-turbo model exclusively, as it offers the best speed/quality
+ * ratio and is the main reason to choose Whisper over Parakeet.
  */
 
-import { createRequire } from "node:module"
+// Dynamic require for loading native addon (works in both ESM and CJS)
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const bindingsModule = require("bindings") as (name: string) => unknown
 
-// Dynamic require for native addon (works in both ESM and CJS)
-const dynamicRequire = createRequire(import.meta.url)
-
+/**
+ * Native addon interface
+ */
 interface NativeAddon {
   initialize(options: {
     modelPath: string
@@ -35,22 +40,46 @@ interface NativeTranscriptionResult {
   }[]
 }
 
-// Try to load native addon
+/* v8 ignore start - platform checks and native addon loading */
+
+/**
+ * Load the native addon
+ */
+function loadAddon(): NativeAddon {
+  if (process.platform !== "darwin") {
+    throw new Error("whisper-coreml is only supported on macOS")
+  }
+
+  try {
+    return bindingsModule("whisper_asr") as NativeAddon
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error)
+    throw new Error(`Failed to load Whisper ASR native addon: ${message}`)
+  }
+}
+
+/* v8 ignore stop */
+
 let addon: NativeAddon | null = null
 let loadError: Error | null = null
 
-try {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-  addon = dynamicRequire("bindings")("whisper_asr") as NativeAddon
-} catch (error: unknown) {
-  loadError = error instanceof Error ? error : new Error(String(error))
+function getAddon(): NativeAddon {
+  if (!addon) {
+    try {
+      addon = loadAddon()
+    } catch (error) {
+      loadError = error instanceof Error ? error : new Error(String(error))
+      throw error
+    }
+  }
+  return addon
 }
 
 /**
  * Check if Whisper ASR is available on this platform
  */
 export function isAvailable(): boolean {
-  return addon !== null && process.platform === "darwin" && process.arch === "arm64"
+  return process.platform === "darwin" && process.arch === "arm64"
 }
 
 /**
@@ -105,15 +134,19 @@ export interface WhisperAsrOptions {
 /**
  * Whisper ASR Engine with CoreML acceleration
  *
+ * Uses the large-v3-turbo model for best speed/quality balance.
+ *
  * @example
  * ```typescript
- * const engine = new WhisperAsrEngine({
- *   modelPath: "./models/whisper/ggml-large-v3-turbo.bin"
- * });
+ * import { WhisperAsrEngine, getModelPath } from "whisper-coreml"
  *
- * await engine.initialize();
- * const result = await engine.transcribe(audioSamples, 16000);
- * console.log(result.text);
+ * const engine = new WhisperAsrEngine({
+ *   modelPath: getModelPath()
+ * })
+ *
+ * await engine.initialize()
+ * const result = await engine.transcribe(audioSamples, 16000)
+ * console.log(result.text)
  * ```
  */
 export class WhisperAsrEngine {
@@ -121,28 +154,22 @@ export class WhisperAsrEngine {
   private initialized = false
 
   constructor(options: WhisperAsrOptions) {
-    if (!isAvailable()) {
-      throw new Error(
-        `Whisper ASR is only available on macOS ARM64. ` +
-          `Current platform: ${process.platform}/${process.arch}. ` +
-          (loadError ? `Load error: ${loadError.message}` : "")
-      )
-    }
     this.options = options
   }
 
+  /* v8 ignore start - native addon calls, tested via E2E */
+
   /**
    * Initialize the Whisper engine
-   * This loads the model into memory - may take a few seconds for large models.
+   * This loads the model into memory - may take a few seconds.
    */
   initialize(): Promise<void> {
-    if (this.initialized) return Promise.resolve()
-
-    if (!addon) {
-      return Promise.reject(new Error("Native addon not loaded"))
+    if (this.initialized) {
+      return Promise.resolve()
     }
 
-    const success = addon.initialize({
+    const nativeAddon = getAddon()
+    const success = nativeAddon.initialize({
       modelPath: this.options.modelPath,
       language: this.options.language ?? "auto",
       translate: this.options.translate ?? false,
@@ -161,23 +188,29 @@ export class WhisperAsrEngine {
    * Check if the engine is ready for transcription
    */
   isReady(): boolean {
-    return this.initialized && addon?.isInitialized() === true
+    if (!this.initialized) {
+      return false
+    }
+    try {
+      return getAddon().isInitialized()
+    } catch {
+      return false
+    }
   }
 
   /**
    * Transcribe audio samples
    *
-   * @param samples - Float32Array of audio samples (mono)
-   * @param sampleRate - Sample rate in Hz (e.g., 16000, 44100, 48000)
-   * @returns Transcription result with text and optional segments
+   * @param samples - Float32Array of audio samples (mono, 16kHz)
+   * @param sampleRate - Sample rate in Hz (default: 16000)
+   * @returns Transcription result with text and segments
    */
   transcribe(samples: Float32Array, sampleRate = 16000): Promise<TranscriptionResult> {
-    if (!this.isReady() || !addon) {
+    if (!this.initialized) {
       return Promise.reject(new Error("Whisper engine not initialized. Call initialize() first."))
     }
 
-    // Run transcription (synchronous in native code, but we wrap in Promise for consistency)
-    const result = addon.transcribe(samples, sampleRate)
+    const result = getAddon().transcribe(samples, sampleRate)
 
     return Promise.resolve({
       text: result.text,
@@ -191,8 +224,12 @@ export class WhisperAsrEngine {
    * Clean up resources and unload the model
    */
   cleanup(): void {
-    if (addon && this.initialized) {
-      addon.cleanup()
+    if (this.initialized) {
+      try {
+        getAddon().cleanup()
+      } catch {
+        // Ignore cleanup errors
+      }
       this.initialized = false
     }
   }
@@ -201,37 +238,19 @@ export class WhisperAsrEngine {
    * Get version information
    */
   getVersion(): { addon: string; whisper: string; coreml: string } {
-    if (!addon) {
-      return { addon: "unknown", whisper: "unknown", coreml: "unknown" }
-    }
-    return addon.getVersion()
+    return getAddon().getVersion()
   }
+
+  /* v8 ignore stop */
 }
 
-/**
- * Available Whisper models
- */
-export const WHISPER_MODELS = {
-  // Tiny models - fastest, lowest accuracy
-  tiny: { size: "75 MB", languages: "multilingual" },
-  "tiny.en": { size: "75 MB", languages: "English only" },
-
-  // Base models - good balance
-  base: { size: "142 MB", languages: "multilingual" },
-  "base.en": { size: "142 MB", languages: "English only" },
-
-  // Small models - better accuracy
-  small: { size: "466 MB", languages: "multilingual" },
-  "small.en": { size: "466 MB", languages: "English only" },
-
-  // Medium models - high accuracy
-  medium: { size: "1.5 GB", languages: "multilingual" },
-  "medium.en": { size: "1.5 GB", languages: "English only" },
-
-  // Large models - best accuracy
-  "large-v2": { size: "2.9 GB", languages: "multilingual" },
-  "large-v3": { size: "2.9 GB", languages: "multilingual" },
-  "large-v3-turbo": { size: "1.5 GB", languages: "multilingual, optimized" }
-} as const
-
-export type WhisperModel = keyof typeof WHISPER_MODELS
+// Re-export download utilities
+export {
+  downloadModel,
+  formatBytes,
+  getDefaultModelDir,
+  getModelPath,
+  isModelDownloaded,
+  WHISPER_MODEL,
+  type DownloadOptions
+} from "./download.js"

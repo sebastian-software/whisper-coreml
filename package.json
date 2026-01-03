@@ -6,45 +6,40 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "bin": {
+    "whisper-coreml": "./dist/cli.cjs"
+  },
   "exports": {
     ".": {
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      },
-      "require": {
-        "types": "./dist/index.d.cts",
-        "default": "./dist/index.cjs"
-      }
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     }
   },
+  "files": [
+    "dist",
+    "build/Release/*.node"
+  ],
   "scripts": {
-    "build": "npm run build:native && npm run build:ts",
     "build:native": "node-gyp rebuild",
     "build:ts": "tsup",
-    "clean": "node-gyp clean && rm -rf dist",
-    "test": "node test.mjs",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "build": "npm run build:native && npm run build:ts",
+    "clean": "node-gyp clean && rm -rf dist coverage",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:integration": "node test.mjs",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "typecheck": "tsc --noEmit",
     "prepare": "husky",
     "prepare:whisper": "bash scripts/prepare-whisper.sh",
-    "download:model": "bash scripts/download-model.sh",
+    "prepublishOnly": "npm run build",
     "release": "release-it",
-    "prepublishOnly": "npm run build"
+    "release:auto": "release-it --ci"
   },
-  "files": [
-    "dist/",
-    "prebuilds/",
-    "build/Release/*.node",
-    "src/*.cc",
-    "src/*.h",
-    "binding.gyp",
-    "scripts/",
-    "README.md"
-  ],
   "keywords": [
     "whisper",
     "openai",
@@ -66,9 +61,30 @@
     "url": "https://github.com/sebastian-software/whisper-coreml/issues"
   },
   "homepage": "https://github.com/sebastian-software/whisper-coreml#readme",
-  "license": "MIT",
-  "engines": {
-    "node": ">=20"
+  "dependencies": {
+    "bindings": "^1.5.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.3.0",
+    "@commitlint/config-conventional": "^20.3.0",
+    "@commitlint/types": "^20.2.0",
+    "@eslint/js": "^9.39.2",
+    "@release-it/conventional-changelog": "^10.0.4",
+    "@stylistic/eslint-plugin": "^5.6.1",
+    "@types/node": "^25.0.3",
+    "@vitest/coverage-v8": "^4.0.16",
+    "conventional-changelog-conventionalcommits": "^9.1.0",
+    "eslint": "^9.39.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "node-addon-api": "^8.5.0",
+    "node-gyp": "^12.1.0",
+    "prettier": "^3.7.4",
+    "release-it": "^19.2.2",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.51.0",
+    "vitest": "^4.0.16"
   },
   "os": [
     "darwin"
@@ -76,25 +92,8 @@
   "cpu": [
     "arm64"
   ],
-  "dependencies": {
-    "bindings": "^1.5.0",
-    "node-addon-api": "^8.0.0"
+  "engines": {
+    "node": ">=20.0.0"
   },
-  "devDependencies": {
-    "@commitlint/cli": "^19.6.1",
-    "@commitlint/config-conventional": "^19.6.0",
-    "@eslint/js": "^9.17.0",
-    "@release-it/conventional-changelog": "^10.0.0",
-    "@types/node": "^25.0.3",
-    "eslint": "^9.17.0",
-    "eslint-config-prettier": "^9.1.0",
-    "husky": "^9.1.7",
-    "lint-staged": "^15.2.11",
-    "node-gyp": "^11.0.0",
-    "prettier": "^3.4.2",
-    "release-it": "^18.1.2",
-    "tsup": "^8.0.0",
-    "typescript": "^5.7.2",
-    "typescript-eslint": "^8.18.2"
-  }
+  "license": "MIT"
 }

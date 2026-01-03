@@ -1,11 +1,23 @@
 import { defineConfig } from "tsup"
 
 export default defineConfig({
-  entry: ["src/index.ts"],
+  entry: {
+    index: "src/index.ts",
+    cli: "src/cli.ts"
+  },
   format: ["esm", "cjs"],
   dts: true,
   clean: true,
   sourcemap: true,
-  target: "es2024",
-  external: ["bindings"]
+  external: ["bindings"],
+
+  // Shim require for ESM builds
+  shims: true,
+
+  // Suppress import.meta warning for CJS (we handle it with shims)
+  esbuildOptions(options) {
+    options.logOverride = {
+      "empty-import-meta": "silent"
+    }
+  }
 })
