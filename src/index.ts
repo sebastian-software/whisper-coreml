@@ -63,6 +63,7 @@ function getAddon(): NativeAddon {
     try {
       addon = loadAddon()
     } catch (error) {
+      // v8 ignore - error path only reached with corrupted installation
       loadError = error instanceof Error ? error : new Error(String(error))
       throw error
     }
