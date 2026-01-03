@@ -35,19 +35,34 @@ better than any cloud API, right on your Mac.
 
 ⚡ **Fast enough.** 14x real-time on M1 Ultra – transcribe 1 hour of audio in under 5 minutes.
 
-## Quick Comparison
+## Why CoreML?
 
-Need **maximum speed** over accuracy? Check out our sister project
-[parakeet-coreml](https://github.com/sebastian-software/parakeet-coreml) (40x real-time, 25
-languages).
+Running Whisper without hardware acceleration is **painfully slow**. Here's how the alternatives
+compare:
 
-|                 | whisper-coreml                        | parakeet-coreml                 |
-| --------------- | ------------------------------------- | ------------------------------- |
-| **Best for**    | Accuracy, rare languages, translation | Speed, major European languages |
-| **Speed**       | 14x real-time                         | 40x real-time                   |
-| **Languages**   | 99                                    | 25 European                     |
-| **Translation** | ✅ Any → English                      | ❌                              |
-| **Model**       | OpenAI Whisper                        | NVIDIA Parakeet                 |
+| Approach                | Speed             | Drawbacks                   |
+| ----------------------- | ----------------- | --------------------------- |
+| OpenAI Whisper (Python) | ~2x real-time     | Slow, needs Python          |
+| whisper.cpp (CPU)       | ~4x real-time     | No acceleration             |
+| faster-whisper          | ~6x real-time     | Needs NVIDIA GPU            |
+| Cloud APIs              | ~1x + latency     | Costs $$$, privacy concerns |
+| **whisper-coreml**      | **14x real-time** | macOS only ✓                |
+
+The Neural Engine in every Apple Silicon Mac is a **dedicated ML accelerator** that usually sits
+idle. This package puts it to work.
+
+### vs. parakeet-coreml
+
+Need even more speed? Our sister project
+[parakeet-coreml](https://github.com/sebastian-software/parakeet-coreml) trades language coverage
+for **40x real-time** performance.
+
+|                 | whisper-coreml                        | parakeet-coreml |
+| --------------- | ------------------------------------- | --------------- |
+| **Best for**    | Accuracy, rare languages, translation | Maximum speed   |
+| **Speed**       | 14x real-time                         | 40x real-time   |
+| **Languages**   | 99                                    | 25 European     |
+| **Translation** | ✅ Any → English                      | ❌              |
 
 ## Features
 
