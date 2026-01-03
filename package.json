@@ -24,8 +24,15 @@
     "build:ts": "tsup",
     "clean": "node-gyp clean && rm -rf dist",
     "test": "node test.mjs",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit",
+    "prepare": "husky",
     "prepare:whisper": "bash scripts/prepare-whisper.sh",
     "download:model": "bash scripts/download-model.sh",
+    "release": "release-it",
     "prepublishOnly": "npm run build"
   },
   "files": [
@@ -74,8 +81,20 @@
     "node-addon-api": "^8.0.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.6.1",
+    "@commitlint/config-conventional": "^19.6.0",
+    "@eslint/js": "^9.17.0",
+    "@release-it/conventional-changelog": "^10.0.0",
+    "@types/node": "^25.0.3",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.11",
     "node-gyp": "^11.0.0",
+    "prettier": "^3.4.2",
+    "release-it": "^18.1.2",
     "tsup": "^8.0.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.2"
   }
 }
