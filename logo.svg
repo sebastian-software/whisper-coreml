@@ -37,20 +37,20 @@
     <line x1="104" y1="64" x2="120" y2="64"/>
   </g>
 
-  <!-- Stylized sound waves forming "whisper" pattern -->
+  <!-- Stylized sound waves - SYMMETRIC -->
   <g transform="translate(64, 64)" filter="url(#glow)">
     <!-- Central microphone/voice indicator -->
     <ellipse cx="0" cy="0" rx="8" ry="12" fill="url(#waveGradient)"/>
     <rect x="-4" y="10" width="8" height="8" rx="2" fill="url(#waveGradient)"/>
     
-    <!-- Expanding whisper waves (asymmetric for "whisper" feel) -->
+    <!-- Symmetric sound waves -->
     <g stroke="url(#waveGradient)" stroke-width="3" stroke-linecap="round" fill="none">
-      <!-- Left waves (quieter) -->
-      <path d="M-18 -8 Q-22 0 -18 8" opacity="0.4"/>
-      <path d="M-26 -14 Q-32 0 -26 14" opacity="0.3"/>
-      <path d="M-34 -20 Q-42 0 -34 20" opacity="0.2"/>
+      <!-- Left waves -->
+      <path d="M-18 -10 Q-24 0 -18 10" opacity="0.7"/>
+      <path d="M-28 -18 Q-38 0 -28 18" opacity="0.5"/>
+      <path d="M-40 -26 Q-54 0 -40 26" opacity="0.35"/>
       
-      <!-- Right waves (louder, speech direction) -->
+      <!-- Right waves (mirrored) -->
       <path d="M18 -10 Q24 0 18 10" opacity="0.7"/>
       <path d="M28 -18 Q38 0 28 18" opacity="0.5"/>
       <path d="M40 -26 Q54 0 40 26" opacity="0.35"/>
@@ -65,4 +65,3 @@
     <circle cx="100" cy="100" r="3" opacity="0.6"/>
   </g>
 </svg>
-
