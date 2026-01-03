@@ -178,12 +178,11 @@ new WhisperAsrEngine(options: WhisperAsrOptions)
 
 #### Options
 
-| Option      | Type      | Default  | Description                       |
-| ----------- | --------- | -------- | --------------------------------- |
-| `modelPath` | `string`  | required | Path to ggml model file           |
-| `language`  | `string`  | `"auto"` | Language code or "auto" to detect |
-| `translate` | `boolean` | `false`  | Translate to English              |
-| `threads`   | `number`  | `0`      | CPU threads (0 = auto)            |
+| Option      | Type     | Default  | Description                       |
+| ----------- | -------- | -------- | --------------------------------- |
+| `modelPath` | `string` | required | Path to ggml model file           |
+| `language`  | `string` | `"auto"` | Language code or "auto" to detect |
+| `threads`   | `number` | `0`      | CPU threads (0 = auto)            |
 
 #### Methods
 

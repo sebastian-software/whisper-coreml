@@ -12,7 +12,7 @@ static std::unique_ptr<WhisperEngine> g_engine;
 
 /**
  * Initialize the Whisper engine
- * initialize(options: { modelPath: string, language?: string, translate?: boolean, threads?: number })
+ * initialize(options: { modelPath: string, language?: string, threads?: number })
  */
 Napi::Value Initialize(const Napi::CallbackInfo& info) {
     Napi::Env env = info.Env();
@@ -34,10 +34,6 @@ Napi::Value Initialize(const Napi::CallbackInfo& info) {
 
     if (options.Has("language") && options.Get("language").IsString()) {
         engineOptions.language = options.Get("language").As<Napi::String>().Utf8Value();
-    }
-
-    if (options.Has("translate") && options.Get("translate").IsBoolean()) {
-        engineOptions.translate = options.Get("translate").As<Napi::Boolean>().Value();
     }
 
     if (options.Has("threads") && options.Get("threads").IsNumber()) {

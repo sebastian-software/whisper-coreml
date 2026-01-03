@@ -111,7 +111,7 @@ TranscriptionResult WhisperEngine::transcribe(const float* samples, size_t sampl
         wparams.detect_language = false;
     }
 
-    wparams.translate = pImpl->options.translate;
+    wparams.translate = false;  // Translation disabled - use LLMs for better results
     wparams.no_timestamps = false;
 
     // Thread settings

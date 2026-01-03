@@ -27,7 +27,6 @@ struct TranscriptionResult {
 struct WhisperEngineOptions {
     std::string modelPath;
     std::string language = "auto";  // "auto" for auto-detect, or ISO code like "en", "de", "fr"
-    bool translate = false;          // Translate to English
     bool withTimestamps = true;      // Include word/segment timestamps
     int threads = 0;                 // 0 = auto (use all cores)
 };

@@ -16,12 +16,7 @@ const bindingsModule = require("bindings") as (name: string) => unknown
  * Native addon interface
  */
 interface NativeAddon {
-  initialize(options: {
-    modelPath: string
-    language?: string
-    translate?: boolean
-    threads?: number
-  }): boolean
+  initialize(options: { modelPath: string; language?: string; threads?: number }): boolean
   isInitialized(): boolean
   transcribe(samples: Float32Array, sampleRate: number): NativeTranscriptionResult
   cleanup(): void
@@ -125,8 +120,6 @@ export interface WhisperAsrOptions {
   modelPath: string
   /** Language code (e.g., "en", "de", "fr") or "auto" for auto-detection */
   language?: string
-  /** Translate to English (default: false) */
-  translate?: boolean
   /** Number of threads (0 = auto) */
   threads?: number
 }
@@ -172,7 +165,6 @@ export class WhisperAsrEngine {
     const success = nativeAddon.initialize({
       modelPath: this.options.modelPath,
       language: this.options.language ?? "auto",
-      translate: this.options.translate ?? false,
       threads: this.options.threads ?? 0
     })
 
