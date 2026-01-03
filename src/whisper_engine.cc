@@ -13,6 +13,14 @@
 #include <algorithm>
 #include <stdexcept>
 
+// Suppress whisper.cpp logs
+static void whisper_log_callback(ggml_log_level level, const char* text, void* user_data) {
+    (void)level;
+    (void)text;
+    (void)user_data;
+    // Silently ignore all log messages
+}
+
 struct WhisperEngine::Impl {
     whisper_context* ctx = nullptr;
     WhisperEngineOptions options;
@@ -31,6 +39,9 @@ WhisperEngine::WhisperEngine(const WhisperEngineOptions& options)
     : pImpl(std::make_unique<Impl>()) {
 
     pImpl->options = options;
+
+    // Suppress whisper.cpp log output
+    whisper_log_set(whisper_log_callback, nullptr);
 
     // Initialize whisper context with CoreML support
     whisper_context_params cparams = whisper_context_default_params();
