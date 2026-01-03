@@ -1,6 +1,10 @@
 # whisper-coreml
 
 <p align="center">
+  <img src="logo.svg" alt="whisper-coreml" width="128" height="128">
+</p>
+
+<p align="center">
   <strong>OpenAI Whisper ASR for Node.js with CoreML/ANE acceleration on Apple Silicon</strong>
 </p>
 
@@ -137,7 +141,7 @@ engine.cleanup()
 | Sample Rate | **16,000 Hz** (16 kHz)                        |
 | Channels    | **Mono** (single channel)                     |
 | Format      | **Float32Array** with values between -1.0–1.0 |
-| Duration    | Up to ~30 seconds per call                    |
+| Duration    | **Any length** (auto-chunked internally)      |
 
 ### Converting Audio Files
 
