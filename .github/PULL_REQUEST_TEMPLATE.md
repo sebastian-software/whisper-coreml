@@ -13,9 +13,9 @@
 ## Checklist
 
 - [ ] My code follows the project's code style
-- [ ] I have run `npm run lint` and `npm run format`
+- [ ] I have run `pnpm lint` and `pnpm format`
 - [ ] I have added tests that prove my fix/feature works
-- [ ] All new and existing tests pass (`npm test`)
+- [ ] All new and existing tests pass (`pnpm test`)
 - [ ] I have updated documentation if needed
 - [ ] My commits follow conventional commit format
 

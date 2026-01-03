@@ -23,7 +23,7 @@
   "scripts": {
     "build:native": "node-gyp rebuild",
     "build:ts": "tsup",
-    "build": "npm run build:native && npm run build:ts",
+    "build": "pnpm run build:native && pnpm run build:ts",
     "clean": "node-gyp clean && rm -rf dist coverage",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -37,7 +37,7 @@
     "format:check": "prettier --check .",
     "prepare": "husky",
     "prepare:whisper": "bash scripts/prepare-whisper.sh",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "pnpm run build",
     "release": "release-it",
     "release:auto": "release-it --ci"
   },

@@ -9,6 +9,7 @@ contributing.
 
 - macOS 14.0+ on Apple Silicon (M1/M2/M3/M4)
 - Node.js 20+
+- pnpm 9+ (`npm install -g pnpm`)
 - Xcode Command Line Tools (`xcode-select --install`)
 
 ### Getting Started
@@ -19,19 +20,19 @@ git clone https://github.com/sebastian-software/whisper-coreml.git
 cd whisper-coreml
 
 # Install dependencies
-npm install
+pnpm install
 
 # Prepare whisper.cpp (one-time setup, builds with CoreML support)
-npm run prepare:whisper
+pnpm run prepare:whisper
 
 # Build the project
-npm run build
+pnpm build
 
 # Download models for testing
-npx whisper-coreml download
+pnpm exec whisper-coreml download
 
 # Run tests
-npm test
+pnpm test
 ```
 
 ### Project Structure
@@ -63,17 +64,17 @@ whisper-coreml/
 
 ### Commands
 
-| Command                 | Description                     |
-| ----------------------- | ------------------------------- |
-| `npm run build`         | Build native addon + TypeScript |
-| `npm run build:native`  | Build only native addon         |
-| `npm run build:ts`      | Build only TypeScript           |
-| `npm test`              | Run unit tests                  |
-| `npm run test:coverage` | Run tests with coverage         |
-| `npm run benchmark`     | Run performance benchmark       |
-| `npm run lint`          | Run ESLint                      |
-| `npm run format`        | Format code with Prettier       |
-| `npm run typecheck`     | TypeScript type checking        |
+| Command                  | Description                     |
+| ------------------------ | ------------------------------- |
+| `pnpm build`             | Build native addon + TypeScript |
+| `pnpm run build:native`  | Build only native addon         |
+| `pnpm run build:ts`      | Build only TypeScript           |
+| `pnpm test`              | Run unit tests                  |
+| `pnpm run test:coverage` | Run tests with coverage         |
+| `pnpm run benchmark`     | Run performance benchmark       |
+| `pnpm lint`              | Run ESLint                      |
+| `pnpm format`            | Format code with Prettier       |
+| `pnpm typecheck`         | TypeScript type checking        |
 
 ### Code Style
 
@@ -99,7 +100,7 @@ refactor: code refactoring
 The project uses Husky to run:
 
 - **pre-commit**: Prettier formatting via lint-staged
-- **pre-push**: ESLint + TypeScript checks
+- **pre-push**: ESLint + TypeScript checks + Tests
 - **commit-msg**: Conventional commit validation
 
 ## Submitting Changes
@@ -109,7 +110,7 @@ The project uses Husky to run:
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feat/amazing-feature`)
 3. Make your changes
-4. Run tests (`npm test`)
+4. Run tests (`pnpm test`)
 5. Commit using conventional commits
 6. Push to your fork
 7. Open a Pull Request
