@@ -72,7 +72,7 @@ cd whisper-coreml && npm install && npm run benchmark
 | Metric           | whisper-coreml | parakeet-coreml |
 | ---------------- | -------------- | --------------- |
 | Speed (M1 Ultra) | 14x real-time  | 40x real-time   |
-| Languages        | 99             | ~15             |
+| Languages        | 99             | 25 European     |
 | Translation      | ✅ Yes         | ❌ No           |
 | Accuracy (WER)   | Lower (better) | Higher          |
 | Model Size       | ~3 GB          | ~1.5 GB         |
