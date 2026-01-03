@@ -9,8 +9,7 @@ contributing.
 
 - macOS 14.0+ on Apple Silicon (M1/M2/M3/M4)
 - Node.js 20+
-- pnpm 9+
-- Xcode Command Line Tools
+- Xcode Command Line Tools (`xcode-select --install`)
 
 ### Getting Started
 
@@ -20,16 +19,19 @@ git clone https://github.com/sebastian-software/whisper-coreml.git
 cd whisper-coreml
 
 # Install dependencies
-pnpm install
+npm install
 
-# Prepare whisper.cpp (one-time setup)
-pnpm run prepare:whisper
+# Prepare whisper.cpp (one-time setup, builds with CoreML support)
+npm run prepare:whisper
 
 # Build the project
-pnpm build
+npm run build
+
+# Download models for testing
+npx whisper-coreml download
 
 # Run tests
-pnpm test
+npm test
 ```
 
 ### Project Structure
@@ -37,39 +39,45 @@ pnpm test
 ```
 whisper-coreml/
 ├── src/
-│   ├── index.ts        # Main TypeScript API
-│   ├── download.ts     # Model download logic
-│   ├── cli.ts          # CLI tool
-│   ├── *.cc            # C++ native addon
-│   └── *.h             # C++ headers
+│   ├── index.ts           # Main TypeScript API
+│   ├── download.ts        # Model download logic
+│   ├── cli.ts             # CLI tool
+│   ├── addon.cc           # N-API addon entry
+│   ├── whisper_engine.cc  # Whisper engine wrapper
+│   └── whisper_engine.h   # C++ header
 ├── test/
-│   ├── *.test.ts       # Unit tests
-│   └── e2e.test.ts     # E2E tests
+│   ├── *.test.ts          # Unit tests
+│   ├── e2e.test.ts        # E2E tests (requires models)
+│   └── fixtures/          # Test audio files
+├── scripts/
+│   └── prepare-whisper.sh # Builds whisper.cpp with CoreML
 ├── vendor/
-│   └── whisper.cpp/    # whisper.cpp submodule
-├── dist/               # Built TypeScript
-└── build/              # Built native addon
+│   └── whisper.cpp/       # whisper.cpp (cloned by prepare script)
+├── docs/
+│   └── adr/               # Architecture Decision Records
+├── dist/                  # Built TypeScript
+└── build/                 # Built native addon
 ```
 
 ## Development Workflow
 
 ### Commands
 
-| Command              | Description                     |
-| -------------------- | ------------------------------- |
-| `pnpm build`         | Build native addon + TypeScript |
-| `pnpm build:native`  | Build only native addon         |
-| `pnpm build:ts`      | Build only TypeScript           |
-| `pnpm test`          | Run unit tests                  |
-| `pnpm test:e2e`      | Run E2E tests (requires models) |
-| `pnpm test:coverage` | Run tests with coverage         |
-| `pnpm lint`          | Run ESLint                      |
-| `pnpm format`        | Format code with Prettier       |
-| `pnpm typecheck`     | TypeScript type checking        |
+| Command                 | Description                     |
+| ----------------------- | ------------------------------- |
+| `npm run build`         | Build native addon + TypeScript |
+| `npm run build:native`  | Build only native addon         |
+| `npm run build:ts`      | Build only TypeScript           |
+| `npm test`              | Run unit tests                  |
+| `npm run test:coverage` | Run tests with coverage         |
+| `npm run benchmark`     | Run performance benchmark       |
+| `npm run lint`          | Run ESLint                      |
+| `npm run format`        | Format code with Prettier       |
+| `npm run typecheck`     | TypeScript type checking        |
 
 ### Code Style
 
-- We use ESLint with TypeScript rules
+- ESLint with strict TypeScript rules
 - Prettier for formatting
 - Conventional Commits for commit messages
 
@@ -101,7 +109,7 @@ The project uses Husky to run:
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feat/amazing-feature`)
 3. Make your changes
-4. Run tests (`pnpm test`)
+4. Run tests (`npm test`)
 5. Commit using conventional commits
 6. Push to your fork
 7. Open a Pull Request
@@ -130,6 +138,11 @@ Please include:
 - Describe the use case
 - Explain why it would be useful
 - Consider if it fits the project scope (macOS/CoreML focused)
+
+## Architecture Decisions
+
+Significant decisions are documented in [docs/adr/](docs/adr/). When making architectural changes,
+please add an ADR explaining the reasoning.
 
 ## Questions?
 
