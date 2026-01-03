@@ -25,3 +25,4 @@ models/
 .vscode/
 *.swp
 
+.env
