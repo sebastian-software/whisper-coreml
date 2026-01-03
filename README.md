@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <strong>OpenAI Whisper ASR for Node.js with CoreML/ANE acceleration on Apple Silicon</strong>
+  <strong>Best-in-class speech recognition for Node.js on Apple Silicon</strong>
 </p>
 
 <p align="center">
@@ -19,93 +19,69 @@
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
 </p>
 
-Powered by [whisper.cpp](https://github.com/ggerganov/whisper.cpp) running on Apple's Neural Engine
-via CoreML.
+**Transcribe audio in 99 languages. Translate to English. Run 100% offline on your Mac.**
 
-## Why whisper-coreml?
+OpenAI's Whisper is the gold standard for speech recognition accuracy. This package brings it to
+Node.js – powered by Apple's Neural Engine for fast, private, local transcription.
 
-When you need **higher transcription quality** than
-[parakeet-coreml](https://github.com/sebastian-software/parakeet-coreml), Whisper's large-v3-turbo
-model delivers. It offers:
+## The Pitch
 
-- **99 language support** vs Parakeet's 25 European languages
-- **Better accuracy** on challenging audio (accents, background noise)
-- **Translation capability** (any language → English)
-- **Word-level confidence scores**
+🎯 **Accuracy first.** Whisper large-v3-turbo delivers state-of-the-art transcription quality –
+better than any cloud API, right on your Mac.
 
-### When to Use Which
+🌍 **99 languages.** From Afrikaans to Zulu. Plus translation from any language to English.
 
-| Use Case                            | Recommended                                                              |
-| ----------------------------------- | ------------------------------------------------------------------------ |
-| Fast transcription, major languages | [parakeet-coreml](https://github.com/sebastian-software/parakeet-coreml) |
-| Maximum accuracy, any language      | **whisper-coreml**                                                       |
-| Translation to English              | **whisper-coreml**                                                       |
-| Edge cases (accents, noise)         | **whisper-coreml**                                                       |
+🔒 **100% private.** Your audio never leaves your device. No API keys. No cloud. No subscription.
+
+⚡ **Fast enough.** 14x real-time on M1 Ultra – transcribe 1 hour of audio in under 5 minutes.
+
+## Quick Comparison
+
+Need **maximum speed** over accuracy? Check out our sister project
+[parakeet-coreml](https://github.com/sebastian-software/parakeet-coreml) (40x real-time, 25
+languages).
+
+|                 | whisper-coreml                        | parakeet-coreml                 |
+| --------------- | ------------------------------------- | ------------------------------- |
+| **Best for**    | Accuracy, rare languages, translation | Speed, major European languages |
+| **Speed**       | 14x real-time                         | 40x real-time                   |
+| **Languages**   | 99                                    | 25 European                     |
+| **Translation** | ✅ Any → English                      | ❌                              |
+| **Model**       | OpenAI Whisper                        | NVIDIA Parakeet                 |
 
 ## Features
 
-- 🎯 **99 Languages** – Full Whisper multilingual support
-- 🚀 **14x real-time** – Transcribe 1 hour of audio in ~4.5 minutes (M1 Ultra, measured)
-- 🍎 **Neural Engine Acceleration** – Runs on Apple's dedicated ML silicon via CoreML
-- 🔒 **Fully Offline** – All processing happens locally
-- 📦 **Zero Runtime Dependencies** – No Python, no subprocess
+- 🎯 **99 Languages** – Full OpenAI Whisper multilingual support
+- 🚀 **14x real-time** – 1 hour of audio in ~4.5 minutes (M1 Ultra)
+- 🍎 **Neural Engine** – Runs on Apple's dedicated ML chip via CoreML
+- 🔒 **Fully Offline** – No internet required after setup
+- 📦 **Zero Dependencies** – No Python, no subprocess, no hassle
 - 📝 **Timestamps** – Segment-level timing for subtitles
-- 🔄 **Translation** – Translate any language to English
-- ⬇️ **Easy Setup** – Single CLI command to download the model
+- 🔄 **Translation** – Any language → English
+- ⬇️ **One Command Setup** – `npx whisper-coreml download`
 
-## Performance
-
-The CoreML encoder runs on Apple's Neural Engine for accelerated inference:
-
-**Measured: M1 Ultra**
-
-```
-5 minutes of audio → 22.5 seconds
-Speed: 14x real-time
-1 hour of audio in ~4.5 minutes
-```
-
-Run your own benchmark:
+## Get Started
 
 ```bash
-git clone https://github.com/sebastian-software/whisper-coreml
-cd whisper-coreml && npm install && npm run benchmark
-```
-
-### Comparison with parakeet-coreml
-
-| Metric           | whisper-coreml | parakeet-coreml |
-| ---------------- | -------------- | --------------- |
-| Speed (M1 Ultra) | 14x real-time  | 40x real-time   |
-| Languages        | 99             | 25 European     |
-| Translation      | ✅ Yes         | ❌ No           |
-| Accuracy (WER)   | Lower (better) | Higher          |
-| Model Size       | ~3 GB          | ~1.5 GB         |
-
-**When to choose whisper-coreml:** Maximum accuracy, rare languages, translation, challenging audio.
-
-**When to choose parakeet-coreml:** Maximum speed, major languages only.
-
-## Requirements
-
-- macOS 14.0+ (Sonoma or later)
-- Apple Silicon (M1, M2, M3, M4 – any variant)
-- Node.js 20+
-
-## Installation
-
-```bash
+# Install
 npm install whisper-coreml
-```
 
-### Download the Model
-
-```bash
+# Download the model (~3GB, one-time)
 npx whisper-coreml download
 ```
 
-This downloads the **large-v3-turbo** model (~1.5GB) – the only model we support, as it offers the
-best speed/quality ratio.
+**Requirements:** macOS 14+ (Sonoma), Apple Silicon (M1/M2/M3/M4), Node.js 20+
+
+## Performance
+
+Measured on M1 Ultra:
+
+```
+5 min audio  →  22 seconds  →  14x real-time
+1 hour audio →  4.5 minutes
+```
+
+Run `npx whisper-coreml benchmark` to test on your machine.
 
 ## Quick Start
 
