@@ -52,7 +52,6 @@ model delivers. It offers:
 - macOS 14.0+ (Sonoma or later)
 - Apple Silicon (M1, M2, M3, M4 – any variant)
 - Node.js 20+
-- Xcode Command Line Tools
 
 ## Installation
 
