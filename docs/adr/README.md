@@ -12,11 +12,12 @@ ADRs document significant architectural decisions made during development. They 
 
 ## Index
 
-| ADR                               | Title                                | Status   |
-| --------------------------------- | ------------------------------------ | -------- |
-| [001](001-coreml-encoder.md)      | Use CoreML Encoder for Neural Engine | Accepted |
-| [002](002-large-v3-turbo-only.md) | Support Only large-v3-turbo Model    | Accepted |
-| [003](003-whisper-cpp-backend.md) | Use whisper.cpp as Backend           | Accepted |
+| ADR                                   | Title                                | Status   |
+| ------------------------------------- | ------------------------------------ | -------- |
+| [001](001-coreml-encoder.md)          | Use CoreML Encoder for Neural Engine | Accepted |
+| [002](002-large-v3-turbo-only.md)     | Support Only large-v3-turbo Model    | Accepted |
+| [003](003-whisper-cpp-backend.md)     | Use whisper.cpp as Backend           | Accepted |
+| [004](004-coreml-model-versioning.md) | CoreML Model Versioning              | Accepted |
 
 ## Creating New ADRs
 
