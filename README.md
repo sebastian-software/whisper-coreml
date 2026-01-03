@@ -19,7 +19,7 @@
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
 </p>
 
-**Transcribe audio in 99 languages. Translate to English. Run 100% offline on your Mac.**
+**Transcribe audio in 99 languages. Run 100% offline on your Mac.**
 
 OpenAI's Whisper is the gold standard for speech recognition accuracy. This package brings it to
 Node.js – powered by Apple's Neural Engine for fast, private, local transcription.
@@ -29,7 +29,7 @@ Node.js – powered by Apple's Neural Engine for fast, private, local transcript
 🎯 **Accuracy first.** Whisper large-v3-turbo delivers state-of-the-art transcription quality –
 better than any cloud API, right on your Mac.
 
-🌍 **99 languages.** From Afrikaans to Zulu. Plus translation from any language to English.
+🌍 **99 languages.** From Afrikaans to Zulu. Handles accents, dialects, and background noise.
 
 🔒 **100% private.** Your audio never leaves your device. No API keys. No cloud. No subscription.
 
@@ -57,12 +57,11 @@ Need even more speed? Our sister project
 [parakeet-coreml](https://github.com/sebastian-software/parakeet-coreml) trades language coverage
 for **40x real-time** performance.
 
-|                 | whisper-coreml                        | parakeet-coreml |
-| --------------- | ------------------------------------- | --------------- |
-| **Best for**    | Accuracy, rare languages, translation | Maximum speed   |
-| **Speed**       | 14x real-time                         | 40x real-time   |
-| **Languages**   | 99                                    | 25 European     |
-| **Translation** | ✅ Any → English                      | ❌              |
+|               | whisper-coreml           | parakeet-coreml |
+| ------------- | ------------------------ | --------------- |
+| **Best for**  | Accuracy, rare languages | Maximum speed   |
+| **Speed**     | 14x real-time            | 40x real-time   |
+| **Languages** | 99                       | 25 European     |
 
 ## Features
 
@@ -72,7 +71,6 @@ for **40x real-time** performance.
 - 🔒 **Fully Offline** – No internet required after setup
 - 📦 **Zero Dependencies** – No Python, no subprocess, no hassle
 - 📝 **Timestamps** – Segment-level timing for subtitles
-- 🔄 **Translation** – Any language → English
 - ⬇️ **One Command Setup** – `npx whisper-coreml download`
 
 ## Get Started
@@ -225,18 +223,6 @@ interface TranscriptionSegment {
 | `isModelDownloaded()`  | Check if model is downloaded           |
 | `downloadModel()`      | Download the model                     |
 
-## Translation
-
-Translate any language to English:
-
-```typescript
-const engine = new WhisperAsrEngine({
-  modelPath: getModelPath(),
-  language: "de", // German input
-  translate: true // Output in English
-})
-```
-
 ## Architecture
 
 ```
@@ -258,11 +244,10 @@ const engine = new WhisperAsrEngine({
 
 ## Use Cases
 
-- **Maximum accuracy** – When Parakeet's quality isn't sufficient
-- **Rare languages** – Languages not supported by Parakeet
-- **Translation** – Convert foreign speech to English text
-- **Accented speech** – Whisper handles accents better
-- **Noisy audio** – More robust to background noise
+- **Maximum accuracy** – When other solutions aren't good enough
+- **Rare languages** – 99 languages, far beyond English/European
+- **Accented speech** – Whisper handles accents and dialects well
+- **Noisy audio** – Robust to background noise and music
 
 ## Contributing
 
