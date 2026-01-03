@@ -8,10 +8,15 @@
 import { createRequire } from "node:module"
 
 // Dynamic require for native addon (works in both ESM and CJS)
-const require = createRequire(import.meta.url)
+const dynamicRequire = createRequire(import.meta.url)
 
 interface NativeAddon {
-  initialize(options: { modelPath: string; language?: string; translate?: boolean; threads?: number }): boolean
+  initialize(options: {
+    modelPath: string
+    language?: string
+    translate?: boolean
+    threads?: number
+  }): boolean
   isInitialized(): boolean
   transcribe(samples: Float32Array, sampleRate: number): NativeTranscriptionResult
   cleanup(): void
@@ -22,12 +27,12 @@ interface NativeTranscriptionResult {
   text: string
   language: string
   durationMs: number
-  segments: Array<{
+  segments: {
     startMs: number
     endMs: number
     text: string
     confidence: number
-  }>
+  }[]
 }
 
 // Try to load native addon
@@ -35,8 +40,9 @@ let addon: NativeAddon | null = null
 let loadError: Error | null = null
 
 try {
-  addon = require("bindings")("whisper_asr") as NativeAddon
-} catch (error) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  addon = dynamicRequire("bindings")("whisper_asr") as NativeAddon
+} catch (error: unknown) {
   loadError = error instanceof Error ? error : new Error(String(error))
 }
 
@@ -129,11 +135,11 @@ export class WhisperAsrEngine {
    * Initialize the Whisper engine
    * This loads the model into memory - may take a few seconds for large models.
    */
-  async initialize(): Promise<void> {
-    if (this.initialized) return
+  initialize(): Promise<void> {
+    if (this.initialized) return Promise.resolve()
 
     if (!addon) {
-      throw new Error("Native addon not loaded")
+      return Promise.reject(new Error("Native addon not loaded"))
     }
 
     const success = addon.initialize({
@@ -144,10 +150,11 @@ export class WhisperAsrEngine {
     })
 
     if (!success) {
-      throw new Error("Failed to initialize Whisper engine")
+      return Promise.reject(new Error("Failed to initialize Whisper engine"))
     }
 
     this.initialized = true
+    return Promise.resolve()
   }
 
   /**
@@ -164,20 +171,20 @@ export class WhisperAsrEngine {
    * @param sampleRate - Sample rate in Hz (e.g., 16000, 44100, 48000)
    * @returns Transcription result with text and optional segments
    */
-  async transcribe(samples: Float32Array, sampleRate: number = 16000): Promise<TranscriptionResult> {
+  transcribe(samples: Float32Array, sampleRate = 16000): Promise<TranscriptionResult> {
     if (!this.isReady() || !addon) {
-      throw new Error("Whisper engine not initialized. Call initialize() first.")
+      return Promise.reject(new Error("Whisper engine not initialized. Call initialize() first."))
     }
 
     // Run transcription (synchronous in native code, but we wrap in Promise for consistency)
     const result = addon.transcribe(samples, sampleRate)
 
-    return {
+    return Promise.resolve({
       text: result.text,
       language: result.language,
       durationMs: result.durationMs,
       segments: result.segments
-    }
+    })
   }
 
   /**
