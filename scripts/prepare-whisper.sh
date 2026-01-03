@@ -26,10 +26,9 @@ cd "$VENDOR_DIR/whisper.cpp"
 # Clean previous builds
 rm -rf build
 
-# Configure with Metal GPU (CoreML is optional, requires separate model files)
-# To enable CoreML: set -DWHISPER_COREML=ON and generate CoreML models
+# Configure with CoreML + Metal for maximum performance on Apple Silicon
 cmake -B build \
-    -DWHISPER_COREML=OFF \
+    -DWHISPER_COREML=ON \
     -DWHISPER_METAL=ON \
     -DBUILD_SHARED_LIBS=OFF \
     -DWHISPER_BUILD_EXAMPLES=OFF \
