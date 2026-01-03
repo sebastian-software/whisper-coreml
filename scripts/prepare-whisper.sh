@@ -4,9 +4,11 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PACKAGE_DIR="$(dirname "$SCRIPT_DIR")"
 VENDOR_DIR="$PACKAGE_DIR/vendor"
-WHISPER_VERSION="v1.7.3"
 
-echo "Preparing whisper.cpp for whisper-coreml..."
+# Read version from package.json (single source of truth)
+WHISPER_VERSION=$(node -p "require('$PACKAGE_DIR/package.json').whisperCpp.version")
+
+echo "Preparing whisper.cpp $WHISPER_VERSION for whisper-coreml..."
 
 # Clone whisper.cpp if not exists
 if [ ! -d "$VENDOR_DIR/whisper.cpp" ]; then
@@ -38,9 +40,12 @@ cmake -B build \
 # Build
 cmake --build build -j$(sysctl -n hw.ncpu) --config Release
 
-echo "whisper.cpp built successfully!"
+echo ""
+echo "✓ whisper.cpp $WHISPER_VERSION built successfully!"
 echo ""
 echo "Static library: $VENDOR_DIR/whisper.cpp/build/src/libwhisper.a"
 echo ""
-echo "Next step: Run 'npm run download:model' to download a Whisper model"
+echo "Next steps:"
+echo "  1. pnpm build        # Build native addon + TypeScript"
+echo "  2. pnpm exec whisper-coreml download  # Download models"
 

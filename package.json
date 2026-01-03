@@ -96,5 +96,8 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "whisperCpp": {
+    "version": "v1.7.3"
+  }
 }
