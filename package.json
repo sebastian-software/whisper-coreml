@@ -1,0 +1,81 @@
+{
+  "name": "whisper-coreml",
+  "version": "0.1.0",
+  "description": "OpenAI Whisper ASR for Node.js with CoreML/ANE acceleration on Apple Silicon",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "scripts": {
+    "build": "npm run build:native && npm run build:ts",
+    "build:native": "node-gyp rebuild",
+    "build:ts": "tsup",
+    "clean": "node-gyp clean && rm -rf dist",
+    "test": "node test.mjs",
+    "prepare:whisper": "bash scripts/prepare-whisper.sh",
+    "download:model": "bash scripts/download-model.sh",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist/",
+    "prebuilds/",
+    "build/Release/*.node",
+    "src/*.cc",
+    "src/*.h",
+    "binding.gyp",
+    "scripts/",
+    "README.md"
+  ],
+  "keywords": [
+    "whisper",
+    "openai",
+    "asr",
+    "speech-recognition",
+    "transcription",
+    "coreml",
+    "apple-silicon",
+    "neural-engine",
+    "macos",
+    "whisper.cpp"
+  ],
+  "author": "Sebastian Werner",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sebastian-software/whisper-coreml.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sebastian-software/whisper-coreml/issues"
+  },
+  "homepage": "https://github.com/sebastian-software/whisper-coreml#readme",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "os": [
+    "darwin"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "dependencies": {
+    "bindings": "^1.5.0",
+    "node-addon-api": "^8.0.0"
+  },
+  "devDependencies": {
+    "node-gyp": "^11.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
+  }
+}

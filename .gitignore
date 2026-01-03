@@ -1,0 +1,27 @@
+# Build outputs
+build/
+dist/
+prebuilds/
+
+# Dependencies
+node_modules/
+
+# Python venv (for CoreML model generation)
+.venv/
+
+# Vendor (cloned whisper.cpp)
+vendor/
+
+# Models (too large for git)
+models/
+*.bin
+*.mlmodelc/
+
+# OS files
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
