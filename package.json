@@ -1,6 +1,6 @@
 {
   "name": "whisper-coreml",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "OpenAI Whisper ASR for Node.js with CoreML/ANE acceleration on Apple Silicon",
   "type": "module",
   "main": "./dist/index.cjs",

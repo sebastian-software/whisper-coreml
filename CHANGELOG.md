@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.0.1](https://github.com/sebastian-software/whisper-coreml/compare/v1.0.0...v1.0.1) (2026-01-03)
+
+### Bug Fixes
+
+- **ci:** use fork pool for E2E tests to avoid worker crashes
+  ([78753f2](https://github.com/sebastian-software/whisper-coreml/commit/78753f2fba0777f2a96e4c4673057e0b6737386d))
+- ignore coverage
+  ([94551dd](https://github.com/sebastian-software/whisper-coreml/commit/94551dd0e8c639ee2673cf6f46d35a2c9a2a1b5d))
+
+### Documentation
+
+- add comment explaining uncovered error path
+  ([c88384c](https://github.com/sebastian-software/whisper-coreml/commit/c88384ca948b28a5abad1343348aa5781c6d12be))
+
 ## [1.0.0](https://github.com/sebastian-software/whisper-coreml/compare/v0.2.0...v1.0.0) (2026-01-03)
 
 ### Documentation
