@@ -35,39 +35,6 @@ jobs:
       - name: Run TypeScript check
         run: pnpm typecheck
 
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: "22"
-          cache: "pnpm"
-
-      # --force bypasses os/cpu restrictions (package is macOS-only but unit tests work everywhere)
-      - name: Install dependencies
-        run: pnpm install --ignore-scripts --force
-
-      - name: Build TypeScript
-        run: pnpm build:ts
-
-      - name: Run tests with coverage
-        run: pnpm test:coverage
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          files: ./coverage/lcov.info
-          flags: unit
-          fail_ci_if_error: false
-          token: ${{ secrets.CODECOV_TOKEN }}
-
   build:
     name: Build (macOS)
     runs-on: macos-14

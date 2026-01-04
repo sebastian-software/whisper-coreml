@@ -1,4 +1,4 @@
-name: E2E Tests
+name: Tests
 
 on:
   push:
@@ -8,8 +8,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  e2e:
-    name: E2E Tests (macOS)
+  test:
+    name: Tests (macOS)
     runs-on: macos-15
     timeout-minutes: 45
     steps:
@@ -59,13 +59,12 @@ jobs:
       - name: Download models
         run: node ./dist/cli.cjs download
 
-      - name: Run E2E tests with coverage
-        run: pnpm vitest run --config vitest.config.e2e.ts --coverage
+      - name: Run all tests with coverage
+        run: pnpm test:coverage
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
         with:
           files: ./coverage/lcov.info
-          flags: e2e
           fail_ci_if_error: false
           token: ${{ secrets.CODECOV_TOKEN }}
