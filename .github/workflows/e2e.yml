@@ -36,14 +36,6 @@ jobs:
           path: ~/.cache/whisper-coreml
           key: whisper-models-v2-coreml
 
-      - name: Cache Homebrew
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/Library/Caches/Homebrew
-            /opt/homebrew/Cellar/ffmpeg
-          key: homebrew-ffmpeg-${{ runner.os }}
-
       - name: Install dependencies
         run: pnpm install --ignore-scripts
 
@@ -54,7 +46,7 @@ jobs:
         run: pnpm build
 
       - name: Install ffmpeg
-        run: brew install ffmpeg || true
+        run: brew install ffmpeg
 
       - name: Download models
         run: node ./dist/cli.cjs download
