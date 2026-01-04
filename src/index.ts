@@ -248,10 +248,14 @@ export class WhisperAsrEngine {
 // Re-export download utilities
 export {
   downloadModel,
+  downloadCoreMLModel,
   formatBytes,
   getDefaultModelDir,
   getModelPath,
+  getCoreMLModelPath,
   isModelDownloaded,
+  isBinModelDownloaded,
+  isCoreMLModelDownloaded,
   WHISPER_MODEL,
   type DownloadOptions
 } from "./download.js"

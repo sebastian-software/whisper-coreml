@@ -10,9 +10,12 @@ import { execSync } from "node:child_process"
 
 import {
   downloadModel,
+  downloadCoreMLModel,
   getDefaultModelDir,
   getModelPath,
   isModelDownloaded,
+  isBinModelDownloaded,
+  isCoreMLModelDownloaded,
   WHISPER_MODEL
 } from "./download.js"
 
@@ -177,7 +180,15 @@ async function main(): Promise<void> {
       console.log("===============================\n")
 
       try {
+        // Download main model (.bin)
+        console.log("Step 1/2: Downloading Whisper model...")
         await downloadModel({ force })
+
+        // Download CoreML encoder (.mlmodelc)
+        console.log("\nStep 2/2: Downloading CoreML encoder...")
+        await downloadCoreMLModel({ force })
+
+        console.log("\n✓ All models ready!")
       } catch (error) {
         console.error("\n✗ Download failed:", error instanceof Error ? error.message : error)
         process.exit(1)
@@ -191,17 +202,33 @@ async function main(): Promise<void> {
     }
 
     case "status": {
-      const downloaded = isModelDownloaded()
+      const binDownloaded = isBinModelDownloaded()
+      const coremlDownloaded = isCoreMLModelDownloaded()
+      const allReady = isModelDownloaded()
 
       console.log("Whisper CoreML Status")
       console.log("=====================")
       console.log(`Model directory: ${getDefaultModelDir()}`)
       console.log("")
 
-      if (downloaded) {
-        console.log(`✓ ${WHISPER_MODEL.name} (${WHISPER_MODEL.size}) - Ready`)
+      // Bin model status
+      if (binDownloaded) {
+        console.log(`✓ ${WHISPER_MODEL.name}.bin (${WHISPER_MODEL.size})`)
       } else {
-        console.log("✗ Model not downloaded")
+        console.log(`✗ ${WHISPER_MODEL.name}.bin - Not downloaded`)
+      }
+
+      // CoreML model status
+      if (coremlDownloaded) {
+        console.log(`✓ ${WHISPER_MODEL.name}-encoder.mlmodelc`)
+      } else {
+        console.log(`✗ ${WHISPER_MODEL.name}-encoder.mlmodelc - Not downloaded`)
+      }
+
+      console.log("")
+      if (allReady) {
+        console.log("✓ All models ready!")
+      } else {
         console.log("Run: npx whisper-coreml download")
       }
       break
