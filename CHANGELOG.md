@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/sebastian-software/whisper-coreml/compare/v1.0.1...v1.0.2) (2026-01-04)
+
+### Bug Fixes
+
+- **ci:** use dedicated vitest config for E2E tests with forks pool
+  ([f50c1a9](https://github.com/sebastian-software/whisper-coreml/commit/f50c1a98623ffbf7e4f56e6ad0b6320619aa35a3))
+
 ## [1.0.1](https://github.com/sebastian-software/whisper-coreml/compare/v1.0.0...v1.0.1) (2026-01-03)
 
 ### Bug Fixes
