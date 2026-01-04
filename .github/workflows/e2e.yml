@@ -24,17 +24,25 @@ jobs:
           node-version: "22"
           cache: "pnpm"
 
-      - name: Cache whisper.cpp
+      - name: Cache whisper.cpp build
         uses: actions/cache@v4
         with:
           path: vendor/whisper.cpp
-          key: whisper-cpp-${{ hashFiles('package.json') }}
+          key: whisper-cpp-${{ runner.os }}-${{ hashFiles('package.json') }}
 
-      - name: Cache models
+      - name: Cache Whisper models
         uses: actions/cache@v4
         with:
           path: ~/.cache/whisper-coreml
-          key: whisper-models-v1
+          key: whisper-models-v2-coreml
+
+      - name: Cache Homebrew
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/Library/Caches/Homebrew
+            /opt/homebrew/Cellar/ffmpeg
+          key: homebrew-ffmpeg-${{ runner.os }}
 
       - name: Install dependencies
         run: pnpm install --ignore-scripts
@@ -46,7 +54,7 @@ jobs:
         run: pnpm build
 
       - name: Install ffmpeg
-        run: brew install ffmpeg
+        run: brew install ffmpeg || true
 
       - name: Download models
         run: node ./dist/cli.cjs download
