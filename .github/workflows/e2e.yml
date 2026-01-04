@@ -49,5 +49,19 @@ jobs:
       - name: Download models
         run: node ./dist/cli.cjs download
 
+      - name: Debug - Test native addon loading
+        run: |
+          node -e "
+            try {
+              const addon = require('./build/Release/whisper_asr.node');
+              console.log('✓ Native addon loaded successfully');
+              console.log('Addon exports:', Object.keys(addon));
+            } catch (e) {
+              console.error('✗ Failed to load native addon:', e.message);
+              console.error(e.stack);
+              process.exit(1);
+            }
+          "
+
       - name: Run E2E tests
         run: pnpm vitest run --config vitest.config.e2e.ts
