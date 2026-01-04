@@ -4,7 +4,10 @@ import {
   formatBytes,
   getDefaultModelDir,
   getModelPath,
+  getCoreMLModelPath,
   isModelDownloaded,
+  isBinModelDownloaded,
+  isCoreMLModelDownloaded,
   WHISPER_MODEL
 } from "../src/download.js"
 
@@ -52,6 +55,18 @@ describe("download", () => {
     })
   })
 
+  describe("getCoreMLModelPath", () => {
+    it("returns correct path for CoreML model", () => {
+      const path = getCoreMLModelPath()
+      expect(path).toContain("ggml-large-v3-turbo-encoder.mlmodelc")
+    })
+
+    it("uses custom modelDir when provided", () => {
+      const path = getCoreMLModelPath("/custom/dir")
+      expect(path).toBe("/custom/dir/ggml-large-v3-turbo-encoder.mlmodelc")
+    })
+  })
+
   describe("isModelDownloaded", () => {
     it("returns false for non-existent path", () => {
       const result = isModelDownloaded("/non/existent/path")
@@ -60,6 +75,30 @@ describe("download", () => {
 
     it("returns a boolean", () => {
       const result = isModelDownloaded()
+      expect(typeof result).toBe("boolean")
+    })
+  })
+
+  describe("isBinModelDownloaded", () => {
+    it("returns false for non-existent path", () => {
+      const result = isBinModelDownloaded("/non/existent/path")
+      expect(result).toBe(false)
+    })
+
+    it("returns a boolean", () => {
+      const result = isBinModelDownloaded()
+      expect(typeof result).toBe("boolean")
+    })
+  })
+
+  describe("isCoreMLModelDownloaded", () => {
+    it("returns false for non-existent path", () => {
+      const result = isCoreMLModelDownloaded("/non/existent/path")
+      expect(result).toBe(false)
+    })
+
+    it("returns a boolean", () => {
+      const result = isCoreMLModelDownloaded()
       expect(typeof result).toBe("boolean")
     })
   })
