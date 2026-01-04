@@ -43,9 +43,9 @@ WhisperEngine::WhisperEngine(const WhisperEngineOptions& options)
     // Suppress whisper.cpp log output
     whisper_log_set(whisper_log_callback, nullptr);
 
-    // Initialize whisper context with CoreML support
+    // Initialize whisper context with optional CoreML support
     whisper_context_params cparams = whisper_context_default_params();
-    cparams.use_gpu = true;  // Enable GPU/CoreML
+    cparams.use_gpu = options.useGpu;  // Enable GPU/CoreML if requested
 
     pImpl->ctx = whisper_init_from_file_with_params(
         options.modelPath.c_str(),

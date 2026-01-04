@@ -29,6 +29,7 @@ struct WhisperEngineOptions {
     std::string language = "auto";  // "auto" for auto-detect, or ISO code like "en", "de", "fr"
     bool withTimestamps = true;      // Include word/segment timestamps
     int threads = 0;                 // 0 = auto (use all cores)
+    bool useGpu = true;              // Use CoreML/GPU acceleration
 };
 
 class WhisperEngine {

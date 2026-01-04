@@ -16,7 +16,12 @@ const bindingsModule = require("bindings") as (name: string) => unknown
  * Native addon interface
  */
 interface NativeAddon {
-  initialize(options: { modelPath: string; language?: string; threads?: number }): boolean
+  initialize(options: {
+    modelPath: string
+    language?: string
+    threads?: number
+    useGpu?: boolean
+  }): boolean
   isInitialized(): boolean
   transcribe(samples: Float32Array, sampleRate: number): NativeTranscriptionResult
   cleanup(): void
@@ -123,6 +128,8 @@ export interface WhisperAsrOptions {
   language?: string
   /** Number of threads (0 = auto) */
   threads?: number
+  /** Use GPU/CoreML acceleration (default: true) */
+  useGpu?: boolean
 }
 
 /**
@@ -166,7 +173,8 @@ export class WhisperAsrEngine {
     const success = nativeAddon.initialize({
       modelPath: this.options.modelPath,
       language: this.options.language ?? "auto",
-      threads: this.options.threads ?? 0
+      threads: this.options.threads ?? 0,
+      useGpu: this.options.useGpu ?? true
     })
 
     if (!success) {

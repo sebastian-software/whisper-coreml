@@ -60,7 +60,18 @@ async function runTests() {
 
   // Test 4: Initialize engine
   console.log("Test 4: Initialize engine")
-  const engine = new WhisperAsrEngine({ modelPath: getModelPath() })
+  console.log("  Model path:", getModelPath())
+
+  // Check if CoreML model exists
+  const coremlPath = getModelPath().replace(".bin", "-encoder.mlmodelc")
+  console.log("  CoreML path:", coremlPath)
+  console.log("  CoreML exists:", existsSync(coremlPath))
+
+  // Allow disabling GPU for CI debugging
+  const useGpu = process.env.WHISPER_USE_GPU !== "false"
+  console.log("  Use GPU/CoreML:", useGpu)
+
+  const engine = new WhisperAsrEngine({ modelPath: getModelPath(), useGpu })
   await engine.initialize()
   if (!engine.isReady()) {
     console.log("✗ Engine not ready")

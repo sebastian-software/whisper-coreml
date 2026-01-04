@@ -40,6 +40,10 @@ Napi::Value Initialize(const Napi::CallbackInfo& info) {
         engineOptions.threads = options.Get("threads").As<Napi::Number>().Int32Value();
     }
 
+    if (options.Has("useGpu") && options.Get("useGpu").IsBoolean()) {
+        engineOptions.useGpu = options.Get("useGpu").As<Napi::Boolean>().Value();
+    }
+
     try {
         g_engine = std::make_unique<WhisperEngine>(engineOptions);
         return Napi::Boolean::New(env, true);

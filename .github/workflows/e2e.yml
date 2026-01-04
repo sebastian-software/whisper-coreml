@@ -53,3 +53,5 @@ jobs:
 
       - name: Run E2E tests
         run: node test/e2e-runner.cjs
+        env:
+          WHISPER_USE_GPU: "false" # Disable CoreML until CI has compatible macOS version
