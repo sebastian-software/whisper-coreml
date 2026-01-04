@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.1.0](https://github.com/sebastian-software/whisper-coreml/compare/v1.0.2...v1.1.0) (2026-01-04)
+
+### Features
+
+- export SUPPORTED_LANGUAGES array and SupportedLanguage type
+  ([f76e325](https://github.com/sebastian-software/whisper-coreml/commit/f76e3251497ab5e0f0e0c4590142e07019ab815d))
+
+### Bug Fixes
+
+- **ci:** add useGpu option and disable GPU for CI tests
+  ([d6a39b1](https://github.com/sebastian-software/whisper-coreml/commit/d6a39b1b72ea768ed5328a5994175faf05ff6f55))
+- **ci:** increase test timeout and remove redundant build job
+  ([b6e685b](https://github.com/sebastian-software/whisper-coreml/commit/b6e685bf1b5de7fe0346caa6810d10f61c24157c))
+- **ci:** remove broken ffmpeg cache, install directly
+  ([20b089d](https://github.com/sebastian-software/whisper-coreml/commit/20b089d0d940cd7827a24bab44a42bb4913ea627))
+- **ci:** use simple Node.js E2E runner instead of Vitest
+  ([547745c](https://github.com/sebastian-software/whisper-coreml/commit/547745c7025ad378530365c41af267535b95d41f))
+- download CoreML encoder model in addition to bin model
+  ([7f1b427](https://github.com/sebastian-software/whisper-coreml/commit/7f1b4277c7da549e7fc21d56d9a26d8c86a5886f))
+
 ## [1.0.2](https://github.com/sebastian-software/whisper-coreml/compare/v1.0.1...v1.0.2) (2026-01-04)
 
 ### Bug Fixes
