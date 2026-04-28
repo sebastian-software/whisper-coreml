@@ -9,6 +9,7 @@
 </p>
 
 <p align="center">
+  <a href="https://oss.sebastian-software.com"><img src="https://img.shields.io/badge/Powered%20by-Sebastian%20Software-00718d?style=flat-square" alt="Powered by Sebastian Software"></a>
   <a href="https://github.com/sebastian-software/whisper-coreml/actions/workflows/ci.yml"><img src="https://github.com/sebastian-software/whisper-coreml/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="https://www.npmjs.com/package/whisper-coreml"><img src="https://img.shields.io/npm/v/whisper-coreml.svg" alt="npm version"></a>
   <a href="https://www.npmjs.com/package/whisper-coreml"><img src="https://img.shields.io/npm/dm/whisper-coreml.svg" alt="npm downloads"></a>
@@ -263,4 +264,15 @@ MIT – see [LICENSE](LICENSE) for details.
 
 ---
 
-Copyright © 2026 [Sebastian Software GmbH](https://sebastian-software.de), Mainz, Germany
+<!-- sebastian-software-branding:start -->
+<p align="center">
+  <a href="https://oss.sebastian-software.com">
+    <img src="https://sebastian-brand.vercel.app/sebastian-software/logo-software.svg" alt="Sebastian Software" width="240" />
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://oss.sebastian-software.com">Open Source at Sebastian Software</a><br />
+  Copyright &copy; 2026 Sebastian Software GmbH
+</p>
+<!-- sebastian-software-branding:end -->
